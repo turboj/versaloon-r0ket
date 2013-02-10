@@ -17,3 +17,5 @@
 *.app
 *.elf
 *.bin
+
+Makefile.dep
