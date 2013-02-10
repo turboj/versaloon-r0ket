@@ -1,0 +1,115 @@
+#!/usr/bin/env python
+# -*- coding: utf8 -*-
+
+import os
+import time
+import shutil
+
+def flash(count, target, firmware):
+    flashed = []
+    while len(flashed) != count:
+        filelist = []
+        try:
+            filelist = os.listdir(target)
+        except:
+            pass
+        oldflashed = flashed
+        flashed = []
+        for x in oldflashed:
+            if x in filelist:
+                flashed.append(x)
+            else:
+                print "removed %s" % x
+        filelist = [x for x in filelist if x not in flashed]
+        print "filelist", filelist
+        for device in filelist:
+            try:
+                print "open", firmware
+                f = open(firmware, "r")
+                print "open", target + device
+                dev = open(target + device, "w")
+                dev.seek(0x800)
+                print "write"
+                dev.write(f.read())
+                print "close f"
+                f.close()
+                print "close dev"
+                dev.close()
+                print "flashed %s" % device
+            except Exception, ex:
+                print "error!"
+                print ex
+            flashed.append(device)
+        time.sleep(1)
+
+def copy(count, target, dir):
+    flashed = []
+    #filestocopy = os.listdir(dir)
+    os.mkdir("/tmp/r0ket")
+
+    while len(flashed) != count:
+        filelist = []
+        while len(filelist) != count:
+            try:
+                filelist = os.listdir(target)
+            except:
+                pass
+        oldflashed = flashed
+        flashed = []
+        for x in oldflashed:
+            if x in filelist:
+                flashed.append(x)
+            else:
+                print "removed %s" % x
+        filelist = [x for x in filelist if x not in flashed]
+        print "filelist:",filelist
+        for device in filelist:
+            try:
+                time.sleep(0.3)
+                print "mkdir", "/tmp/r0ket/"+device
+                os.mkdir("/tmp/r0ket/"+device)
+                print "mount -t vfat "+target+device+" "+"/tmp/r0ket/"+device
+                x = 1
+                while x != 0:
+                    x = os.system("mount -t vfat "+target+device+" "+"/tmp/r0ket/"+device)
+                    print "returned", x
+                    if x != 0:
+                        time.sleep(5)
+                os.system("../tools/crypto/generate-keys")
+                #for file in filestocopy:
+                print     "cp "+dir+"/* /tmp/r0ket/"+device
+                os.system("cp "+dir+"/* /tmp/r0ket/"+device)
+                print "flashed %s" % device
+            except Exception, ex:
+                print "error!"
+                print ex
+            flashed.append(device)
+        print "sync"
+        os.system("sync")
+        mounted = os.listdir("/tmp/r0ket")
+        print "mounted", mounted
+        for mount in mounted:
+            print "touch /tmp/r0ket/"+mount+"/flashed.cfg"
+            os.system("touch /tmp/r0ket/"+mount+"/flashed.cfg")
+            print "sync"
+            os.system("sync")
+            time.sleep(1)
+            print "umount /tmp/r0ket/"+mount
+            os.system("umount /tmp/r0ket/"+mount)
+            print "rm /tmp/r0ket/"+mount
+            os.rmdir("/tmp/r0ket/"+mount)
+        time.sleep(1)
+    print "rm /tmp/r0ket"
+    os.rmdir("/tmp/r0ket")
+
+os.system("umount /tmp/r0ket/*")
+os.system("rm /tmp/r0ket -rf")
+os.system("rm /dev/r0ketflash/*")
+while True:
+    raw_input("Flashed firmware.\nNow cycle power and press enter.")
+    flash(9, "/dev/lpcflash/", "initial.bin")
+    raw_input("Flashed bootstrap firmware.\nNow cycle power and press enter.")
+    copy(9, "/dev/r0ketflash/","files")
+    flash(9, "/dev/lpcflash/", "final.bin")
+
+

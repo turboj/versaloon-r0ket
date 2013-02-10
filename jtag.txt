@@ -1,0 +1,11 @@
+Signal  GPIO    R0ket   M0DUL Pin
+TMS	2.5	SS0	6 A
+TCK	2.4	SS1	8 A
+TDO	0.8     MISO	2
+TDI     0.9     MOSI    3
+SRST	2.8     SS2     10 A
+TRST    3.1     SS4     8 B
+RTCK    2.10    SS5     10 B
+
+
+GND     ---     GND      5
