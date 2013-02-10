@@ -64,13 +64,16 @@
 #define GPIO_PIN_15					15
 #define GPIO_PIN_GetMask(p)			(((uint32_t)1) << (p))
 
-#define GPIO_SetPins(port, pin)		gpioSetValue(port,pin,1)
-#define GPIO_ClrPins(port, pin)		gpioSetValue(port,pin,0)
+// LPC13xx uses ADDRESS Bits as GPIO Mask
+#define GPIO_DatMask(port, pin) (*((uint32_t*)(GPIO_GPIO0_BASE + port*0x10000 + (1<<(pin+2)))))
+
+#define GPIO_SetPins(port, pin)		do {GPIO_DatMask(port,pin)=1 << pin; } while (0)
+#define GPIO_ClrPins(port, pin)		do {GPIO_DatMask(port,pin)=0; } while (0)
 #define GPIO_GetOutPins(port, pin)	((port)->ODR & GPIO_PIN_GetMask(pin))
-#define GPIO_GetInPins(port, pin)	gpioGetValue(port,pin)
+#define GPIO_GetInPins(port, pin)	(GPIO_DatMask(port,pin)!=0)
 void GPIO_SetMode(int GPIOx, uint8_t pin, uint8_t mode);
-uint32_t gpioGetValue (uint32_t portNum, uint32_t bitPos);
-void gpioSetValue (uint32_t portNum, uint32_t bitPos, uint32_t bitVal);
+//uint32_t gpioGetValue (uint32_t portNum, uint32_t bitPos);
+//void gpioSetValue (uint32_t portNum, uint32_t bitPos, uint32_t bitVal);
 
 struct usart_status_t
 {
