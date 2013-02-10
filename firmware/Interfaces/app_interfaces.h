@@ -65,7 +65,7 @@
 #define GPIO_PIN_GetMask(p)			(((uint32_t)1) << (p))
 
 // LPC13xx uses ADDRESS Bits as GPIO Mask
-#define GPIO_DatMask(port, pin) (*((uint32_t*)(GPIO_GPIO0_BASE + port*0x10000 + (1<<(pin+2)))))
+#define GPIO_DatMask(port, pin) (*(( volatile uint32_t*)(GPIO_GPIO0_BASE + port*0x10000 + (1<<(pin+2)))))
 
 #define GPIO_SetPins(port, pin)		do {GPIO_DatMask(port,pin)=1 << pin; } while (0)
 #define GPIO_ClrPins(port, pin)		do {GPIO_DatMask(port,pin)=0; } while (0)

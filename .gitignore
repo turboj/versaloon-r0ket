@@ -22,3 +22,5 @@
 Makefile.dep
 firmware/lpc1xxx/memory.ld
 firmware/lcd/allfonts.h
+tools/bootloader/lpcfix
+
