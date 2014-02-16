@@ -49,7 +49,8 @@ int getFontHeight(void);
 
 int _getFontData(int type, int offset);
 
-#define MAXCHR (30*20)
+//#define MAXCHR (30*20)
+#define MAXCHR (30*2)
 extern uint8_t charBuf[MAXCHR];
 
 #endif

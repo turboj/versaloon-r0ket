@@ -38,6 +38,7 @@
 		return retval;
 	};
 
+uint16_t max_char_buffer;
 
 uint8_t * pk_decode(const uint8_t * ldata,int * len){
 	ctr=0;hilo=0;
@@ -118,7 +119,8 @@ uint8_t * pk_decode(const uint8_t * ldata,int * len){
 		};
 		curbit=1-curbit;
 	};
-		
+	if ((bufptr-charBuf) > max_char_buffer)
+          max_char_buffer=(bufptr-charBuf);
 	*len=(bufptr-charBuf)/height; // return size of output buffer.
 	return charBuf;
 };

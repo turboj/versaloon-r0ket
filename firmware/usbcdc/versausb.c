@@ -40,5 +40,7 @@ int isVSWriteAvail(void) {
 }
 
 void usbVSWriteBytes(uint8_t * buf, int nbytes) {
+  NVIC_DisableIRQ(USB_IRQn);
   USB_WriteEP (VERSALOON_EP_IN,buf, nbytes);
+  NVIC_EnableIRQ(USB_IRQn);
 }

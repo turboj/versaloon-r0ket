@@ -49,7 +49,11 @@ uint8_t SWD_SeqIn_NoDelay(uint8_t *seq, uint16_t num_of_bits)
 	for (i = 0; i < num_of_bits; i++)
 	{
 		SWD_SWCLK_SET();
+                __asm volatile ("nop");
+                __asm volatile ("nop");
 		SWD_SWCLK_CLR();
+                __asm volatile ("nop");
+                __asm volatile ("nop");
 		if (SWD_SWDIO_GET())
 		{
 			seq[i / 8] |= 1 << (i % 8);
@@ -79,7 +83,11 @@ uint8_t SWD_SeqOut_NoDelay(uint8_t *seq, uint16_t num_of_bits)
 		{
 			SWD_SWDIO_CLR();
 		}
+                __asm volatile ("nop");
+                __asm volatile ("nop");
 		SWD_SWCLK_SET();
+                __asm volatile ("nop");
+                __asm volatile ("nop");
 		SWD_SWCLK_CLR();
 	}
 

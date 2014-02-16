@@ -157,7 +157,7 @@
 
 #if (_HARDWARE_VER == R0KET )
 // R0ket has only 8kB RAM
-#define USB_DATA_BUFF_SIZE				(2 * 1024)
+#define USB_DATA_BUFF_SIZE				(4 * 1024)
 #define ASYN_DATA_BUFF_SIZE				(2 * 1024)
 #else
 #define USB_DATA_BUFF_SIZE				(8 * 1024)

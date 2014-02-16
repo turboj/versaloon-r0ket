@@ -15,7 +15,7 @@ const struct FONT_DEF * font = NULL;
 
 struct EXTFONT efont;
 
-static FIL file; /* current font file */
+static  FIL file; /* current font file */
 
 /* Exported Functions */
 

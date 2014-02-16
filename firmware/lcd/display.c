@@ -32,7 +32,7 @@
 /* Utility routines to manage nokia display */
 /**************************************************************************/
 
-uint8_t lcdBuffer[RESX*RESY_B];
+//uint8_t lcdBuffer[RESX*RESY_B];
 uint32_t intstatus; // Caches USB interrupt state
                     // (need to disable MSC while displaying)
 uint8_t displayType;
@@ -190,7 +190,7 @@ void lcdInit(void) {
     	 * B0: set y address: Y[0-3] = 0
     	 * 10: set x address (upper bits): X[6-4] = 0
     	 */
-        static uint8_t initseq[]= { 0xE2,0xAF, // Display ON
+        static const uint8_t initseq[]= { 0xE2,0xAF, // Display ON
                              0xA1, // Mirror-X
                              0xA4, 0x2F, 0xB0, 0x10};
         int i = 0;
@@ -199,7 +199,7 @@ void lcdInit(void) {
             delayms(5); // actually only needed after the first
         }
     }else{ /* displayType==DISPLAY_N1600 */
-        static uint8_t initseq_d[] = {
+        static const uint8_t initseq_d[] = {
         		/* The controller is a PCF8833 -
                    documentation can be found online.
         		 * CMD 01: Soft-reset

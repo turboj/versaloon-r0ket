@@ -43,9 +43,12 @@ volatile uint32_t cmd_len = 0;
 static uint32_t pkt_ctr=0;
 static uint32_t pktSecond=0;
 
-uint8_t  buffer_out[USB_DATA_BUFF_SIZE];
+
+
+uint8_t  lcdBuffer[USB_DATA_BUFF_SIZE];
 uint8_t asyn_rx_buf[ASYN_DATA_BUFF_SIZE];
 
+uint8_t * const buffer_out = &lcdBuffer;
 
 
 
@@ -78,9 +81,6 @@ static void process_USB(void) {
   if ((getSeconds()- pktSecond)>10) {
 	  cmd_len=0;count_out=0;
 	  pktSecond=getSeconds();
-
-
-
   }
   
   if (!count_out) gpioSetValue(RB_LED2,0);
@@ -178,6 +178,8 @@ static void process_USB(void) {
 }
 
 
+extern uint16_t max_char_buffer;
+
 
 void main(void) {
     // Configure cpu and mandatory peripherals
@@ -236,6 +238,7 @@ void main(void) {
     lcdPrintln("");
     setIntFont(&Font_8x8Thin);
     lcdPrintln("   R0ket");
+    //lcdPrintInt(max_char_buffer);
     setIntFont(&Font_7x8);
     lcdRefresh();
 

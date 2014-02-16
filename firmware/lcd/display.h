@@ -18,7 +18,7 @@
 #define LCD_MIRRORY  (1<<2)
 
 /* Display buffer */
-extern uint8_t lcdBuffer[RESX*RESY_B];
+extern uint8_t lcdBuffer[];
 
 uint8_t lcdRead(uint8_t data);
 void lcdInit(void);
